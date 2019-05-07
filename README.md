@@ -1,0 +1,79 @@
+# PySOT
+**PySOT** is SenseTime Research's software system that implements state-of-the-art single object tracking algorithms, including [SiamRPN](http://openaccess.thecvf.com/content_cvpr_2018/html/Li_High_Performance_Visual_CVPR_2018_paper.html) and [SiamMask](https://arxiv.org/abs/1812.05050). It is written in Python and powered by the [PyTorch](https://pytorch.org) deep learning framework. This project also contains a Python port of toolkit for evaluating trackers.
+
+PySOT has enabled research projects, including: [SiamRPN](http://openaccess.thecvf.com/content_cvpr_2018/html/Li_High_Performance_Visual_CVPR_2018_paper.html), [DaSiamRPN](https://arxiv.org/abs/1808.06048), [SiamRPN++](https://arxiv.org/abs/1812.11703), and [SiamMask](https://arxiv.org/abs/1812.05050).
+
+<div align="center">
+  <img src="demo/output/bag_demo.gif" width="800px" />
+  <p>Example SiamFC, SiamRPN and SiamMask outputs.</p>
+</div>
+
+## Introduction
+
+The goal of PySOT is to provide a high-quality, high-performance codebase for visaul tracking *research*. It is designed to be flexible in order to support rapid implementation and evaluation of novel research. PySOT includes implementations of the following visaul tracking algorithms:
+
+- [SiamMask](https://arxiv.org/abs/1812.05050)
+- [SiamRPN++](https://arxiv.org/abs/1812.11703)
+- [DaSiamRPN](https://arxiv.org/abs/1808.06048)
+- [SiamRPN](http://openaccess.thecvf.com/content_cvpr_2018/html/Li_High_Performance_Visual_CVPR_2018_paper.html)
+- [SiamFC](https://arxiv.org/abs/1606.09549)
+
+using the following backbone network architectures:
+
+- [ResNet{18, 34, 50}](https://arxiv.org/abs/1512.03385)
+- [MobileNetV2](https://arxiv.org/abs/1801.04381)
+- [AlexNet](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks)
+
+Additional backbone architectures may be easily implemented. For more details about these models, please see [References](#references) below.
+
+Evaluation toolkit can support the following datasets:
+
+:paperclip: [OTB2015](http://faculty.ucmerced.edu/mhyang/papers/pami15_tracking_benchmark.pdf) 
+:paperclip: [VOT16/18/19](http://votchallenge.net) 
+:paperclip: [VOT18-LT](http://votchallenge.net/vot2018/index.html) 
+:paperclip: [LaSOT](https://arxiv.org/pdf/1809.07845.pdf) 
+:paperclip: [UAV123](https://arxiv.org/pdf/1804.00518.pdf)
+
+## Model Zoo and Baselines
+
+We provide a large set of baseline results and trained models available for download in the [PySOT Model Zoo](MODEL_ZOO.md).
+
+## Installation
+
+Please find installation instructions for PyTorch and PySOT in [`INSTALL.md`](INSTALL.md).
+
+## Quick Start: Using PySOT
+
+After installation, please see [`GETTING_STARTED.md`](GETTING_STARTED.md) for brief tutorials covering inference and training with PySOT.
+
+## References
+
+- [Fast Online Object Tracking and Segmentation: A Unifying Approach](https://arxiv.org/abs/1812.05050).
+  Qiang Wang, Li Zhang, Luca Bertinetto, Weiming Hu, Philip H.S. Torr.
+  IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2019.
+
+- [SiamRPN++: Evolution of Siamese Visual Tracking with Very Deep Networks](https://arxiv.org/abs/1812.11703).
+  Bo Li, Wei Wu, Qiang Wang, Fangyi Zhang, Junliang Xing, Junjie Yan.
+  IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2019.
+
+- [Distractor-aware Siamese Networks for Visual Object Tracking](https://arxiv.org/abs/1808.06048).
+  Zheng Zhu, Qiang Wang, Bo Li, Wu Wei, Junjie Yan, Weiming Hu.
+  The European Conference on Computer Vision (ECCV), 2018.
+
+- [High Performance Visual Tracking with Siamese Region Proposal Network](http://openaccess.thecvf.com/content_cvpr_2018/html/Li_High_Performance_Visual_CVPR_2018_paper.html).
+  Bo Li, Wei Wu, Zheng Zhu, Junjie Yan, Xiaolin Hu.
+  IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2018.
+
+- [Fully-Convolutional Siamese Networks for Object Tracking](https://arxiv.org/abs/1606.09549).
+  Luca Bertinetto, Jack Valmadre, João F. Henriques, Andrea Vedaldi, Philip H. S. Torr.
+  The European Conference on Computer Vision (ECCV) Workshops, 2016.
+  
+## Contributors
+
+- [Fangyi Zhang](https://github.com/StrangerZhang)
+- [Qiang Wang](http://www.robots.ox.ac.uk/~qwang/)
+- [Bo Li](http://bo-li.info/)
+
+## License
+
+PySOT is released under the [Apache 2.0 license](https://github.com/STVIR/pysot/blob/master/LICENSE). 
