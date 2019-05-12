@@ -1,0 +1,37 @@
+META_ARC: "siamrpn_r50_l234_dwxcorr"
+
+BACKBONE:
+    TYPE: "pysot.models.backbone.resnet_atrous.resnet50"
+    LAYERS: [0, 1, 2, 3]
+    CHANNELS: [1024]
+
+ADJUST:
+    ADJUST: true
+    TYPE: "pysot.models.neck.neck.AdjustAllLayer"
+    ADJUST_CHANNEL: [256]
+
+RPN:
+    TYPE: 'pysot.models.head.rpn.DepthwiseRPN'
+
+MASK:
+    MASK: True
+    MASK_TYPE: 'pysot.models.head.mask.MaskCorr'
+    REFINE: True
+    REFINE_TYPE: 'pysot.models.head.mask.Refine'
+
+ANCHOR:
+    STRIDE: 8
+    RATIOS: [0.33, 0.5, 1, 2, 3]
+    SCALES: [8]
+    ANCHOR_NUM: 5
+
+TRACK:
+    TYPE: 'pysot.tracker.siammask_tracker.SiamMaskTracker'
+    PENALTY_K: 0.10
+    WINDOW_INFLUENCE: 0.41
+    LR: 0.32
+    EXEMPLAR_SIZE: 127
+    INSTANCE_SIZE: 255
+    BASE_SIZE: 8
+    CONTEXT_AMOUNT: 0.5
+    MASK_THERSHOLD: 0.15

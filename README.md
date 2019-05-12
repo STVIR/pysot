@@ -44,7 +44,44 @@ Please find installation instructions for PyTorch and PySOT in [`INSTALL.md`](IN
 
 ## Quick Start: Using PySOT
 
-After installation, please see [`GETTING_STARTED.md`](GETTING_STARTED.md) for brief tutorials covering inference and training with PySOT.
+### Add PySOT to your PYTHONPATH
+```bash
+export PYTHONPATH=/path/to/PySOT:$PYTHONPATH
+```
+
+### Download models
+Download models in [PySOT Model Zoo](MODEL_ZOO.md) and put the model.pth in the correct directory in experiments
+
+### Webcam demo
+```bash
+python tools/demo.py \
+    --config experiments/siamrpn_r50_l234_dwxcorr/config.yaml \
+    --snapshot experiments/siamrpn_r50_l234_dwxcorr/model.pth \
+    # --video demo/bag.avi # (in case you don't have webcam)
+```
+
+### Download testing datasets
+Download datasets and putting them into testing_dataset directory, please refer to [pysot-toolkit](https://github.com/StrangerZhang/pysot-toolkit) to setting testing_dataset
+
+### Test tracker
+```bash
+cd experiments/siamrpn_r50_l234_dwxcorr
+python -u ../../tools/test.py 	\
+	--snapshot model.pth 	\ # model path
+	--dataset VOT2018 	\ # dataset name
+	--config config.yaml	  # config file
+```
+The testing results will in the current directory(results/dataset/model_name/)
+
+### Eval tracker
+assume still in experiments/siamrpn_r50_l234_dwxcorr
+``` bash
+python ../../tools/eval.py 	 \
+	--tracker_path ./results \ # result path
+	--dataset VOT2018        \ # dataset name
+	--num 1 		 \ # number thread to eval
+	--tracker_prefix 'model'   # tracker_name
+```
 
 ## References
 
