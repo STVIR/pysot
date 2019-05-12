@@ -42,5 +42,3 @@ python setup.py build_ext --inplace
 ```
 bash install.sh /path/to/your/conda pysot
 ```
-
-## Downloading dataset
