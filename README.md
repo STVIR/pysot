@@ -61,7 +61,7 @@ python tools/demo.py \
 ```
 
 ### Download testing datasets
-Download datasets and putting them into testing_dataset directory, please refer to [pysot-toolkit](https://github.com/StrangerZhang/pysot-toolkit) to setting testing_dataset
+Download datasets and put them into testing_dataset directory, please refer to [pysot-toolkit](https://github.com/StrangerZhang/pysot-toolkit) to setting testing_dataset
 
 ### Test tracker
 ```bash
