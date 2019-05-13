@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This file documents a large collection of baselines trained with pysot. All configurations for these baselines are located in the `experiments` directory. The tables below provide results about inference. Links to the trained models as well as their output are provided. 
+This file documents a large collection of baselines trained with pysot. All configurations for these baselines are located in the [`experiments`](experiments) directory. The tables below provide results about inference. Links to the trained models as well as their output are provided. 
 
 ## Visual Tracking Baselines
 
@@ -21,6 +21,9 @@ This file documents a large collection of baselines trained with pysot. All conf
 Note:
 
 - speed tested on GTX-1080Ti
+- `alex` denotes [AlexNet](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks), `r50_lxyz` denotes the outputs of stage x, y, and z in [ResNet-50](https://arxiv.org/abs/1512.03385), and `mobilev2` denotes [MobileNetV2](https://arxiv.org/abs/1801.04381).
+- `dwxcorr` denotes Depth-wise Cross Correlation. See more in [SiamRPN++ Section 3.4](https://arxiv.org/abs/1812.11703).
+- The suffixes `otb` and `lt` are designed for the [OTB](http://cvlab.hanyang.ac.kr/tracker_benchmark/benchmark.html) and [VOT long-term tracking challenge](http://www.votchallenge.net/vot2018/), the default (without suffix) is designed for [VOT short-term tracking challenge](http://www.votchallenge.net/index.html).
 
 
 ### Video Object Segmentation Baselines
