@@ -10,7 +10,7 @@ PySOT has enabled research projects, including: [SiamRPN](http://openaccess.the
 
 ## Introduction
 
-The goal of PySOT is to provide a high-quality, high-performance codebase for visaul tracking *research*. It is designed to be flexible in order to support rapid implementation and evaluation of novel research. PySOT includes implementations of the following visual tracking algorithms:
+The goal of PySOT is to provide a high-quality, high-performance codebase for visual tracking *research*. It is designed to be flexible in order to support rapid implementation and evaluation of novel research. PySOT includes implementations of the following visual tracking algorithms:
 
 - [SiamMask](https://arxiv.org/abs/1812.05050)
 - [SiamRPN++](https://arxiv.org/abs/1812.11703)
