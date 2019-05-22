@@ -62,7 +62,7 @@ python tools/demo.py \
 ```
 
 ### Download testing datasets
-Download datasets and put them into testing_dataset directory, please refer to [pysot-toolkit](https://github.com/StrangerZhang/pysot-toolkit) to setting testing_dataset
+Download datasets and put them into `testing_dataset` directory. Jsons of commonly used datasets can be downloaded from [Google Drive](https://drive.google.com/drive/folders/10cfXjwQQBQeu48XMf2xc_W1LucpistPI) or [BaiduYun](https://pan.baidu.com/s/1js0Qhykqqur7_lNRtle1tA#list/path=%2F). If you want to test tracker on new dataset, please refer to [pysot-toolkit](https://github.com/StrangerZhang/pysot-toolkit) to setting `testing_dataset`. 
 
 ### Test tracker
 ```bash
