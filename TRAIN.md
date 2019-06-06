@@ -28,7 +28,7 @@ cd experiments/siamrpn_r50_l234_dwxcorr_8gpu
 
 #### Single node, multiple GPUs:
 ```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 python -m torch.distributed.launch \
     --nproc_per_node=8 \
     --master_port=2333 \
@@ -38,7 +38,7 @@ python -m torch.distributed.launch \
 #### Multiple nodes:
 Node 1: (IP: 192.168.1.1, and has a free port: 2333) master node
 ```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 python -m torch.distributed.launch \
     --nnodes=2 \
     --node_rank=0 \
@@ -49,7 +49,7 @@ python -m torch.distributed.launch \
 ```
 Node 2:
 ```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 python -m torch.distributed.launch \
     --nnodes=2 \
     --node_rank=1 \
