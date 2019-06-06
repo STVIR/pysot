@@ -47,7 +47,7 @@ Please find installation instructions for PyTorch and PySOT in [`INSTALL.md`](IN
 
 ### Add PySOT to your PYTHONPATH
 ```bash
-export PYTHONPATH=/path/to/PySOT:$PYTHONPATH
+export PYTHONPATH=/path/to/pysot:$PYTHONPATH
 ```
 
 ### Download models
@@ -57,7 +57,7 @@ Download models in [PySOT Model Zoo](MODEL_ZOO.md) and put the model.pth in the 
 ```bash
 python tools/demo.py \
     --config experiments/siamrpn_r50_l234_dwxcorr/config.yaml \
-    --snapshot experiments/siamrpn_r50_l234_dwxcorr/model.pth \
+    --snapshot experiments/siamrpn_r50_l234_dwxcorr/model.pth
     # --video demo/bag.avi # (in case you don't have webcam)
 ```
 
@@ -75,7 +75,7 @@ python -u ../../tools/test.py 	\
 The testing results will in the current directory(results/dataset/model_name/)
 
 ### Eval tracker
-assume still in experiments/siamrpn_r50_l234_dwxcorr
+assume still in experiments/siamrpn_r50_l234_dwxcorr_8gpu
 ``` bash
 python ../../tools/eval.py 	 \
 	--tracker_path ./results \ # result path
@@ -83,6 +83,9 @@ python ../../tools/eval.py 	 \
 	--num 1 		 \ # number thread to eval
 	--tracker_prefix 'model'   # tracker_name
 ```
+
+###  Training
+See [TRAIN.md](TRAIN.md) for detailed instruction.
 
 ## References
 

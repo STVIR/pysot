@@ -1,12 +1,13 @@
 # Copyright (c) SenseTime. All Rights Reserved.
 
-from __future__ import absolute_import 
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
 import torch
 import torch.nn.functional as F
+
 
 def xcorr_slow(x, kernel):
     """for loop to calculate cross correlation, slow version
@@ -23,6 +24,7 @@ def xcorr_slow(x, kernel):
     out = torch.cat(out, 0)
     return out
 
+
 def xcorr_fast(x, kernel):
     """group conv2d to calculate cross correlation, fast version
     """
@@ -32,6 +34,7 @@ def xcorr_fast(x, kernel):
     po = F.conv2d(px, pk, groups=batch)
     po = po.view(batch, -1, po.size()[2], po.size()[3])
     return po
+
 
 def xcorr_depthwise(x, kernel):
     """depthwise cross correlation

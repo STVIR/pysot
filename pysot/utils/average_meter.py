@@ -1,9 +1,10 @@
 # Copyright (c) SenseTime. All Rights Reserved.
 
-from __future__ import absolute_import 
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+
 
 class Meter(object):
     def __init__(self, name, val, avg):
@@ -20,7 +21,7 @@ class Meter(object):
         return self.__repr__()
 
 
-class AverageMeter(Meter):
+class AverageMeter:
     """Computes and stores the average and current value"""
     def __init__(self, num=100):
         self.num = num
@@ -63,7 +64,6 @@ class AverageMeter(Meter):
                     del self.history[k][0]
                     self.count[k] -= 1
 
-
     def __repr__(self):
         s = ''
         for k in self.sum:
@@ -102,5 +102,3 @@ if __name__ == '__main__':
         print(avg1.s)
         print(avg2.s)
         print(avg3.s)
-
-

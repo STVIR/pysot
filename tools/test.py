@@ -7,7 +7,9 @@ from __future__ import unicode_literals
 
 import argparse
 import os
+
 import cv2
+import torch
 import numpy as np
 
 from pysot.core.config import cfg
@@ -32,6 +34,7 @@ parser.add_argument('--vis', action='store_true',
         help='whether visualzie result')
 args = parser.parse_args()
 
+torch.set_num_threads(1)
 
 def main():
     # load config
@@ -100,9 +103,11 @@ def main():
                 if idx == 0:
                     cv2.destroyAllWindows()
                 if args.vis and idx > frame_counter:
-                    cv2.polylines(img, [np.array(gt_bbox, np.int).reshape((-1, 1, 2))], True, (0, 255, 0), 3)
+                    cv2.polylines(img, [np.array(gt_bbox, np.int).reshape((-1, 1, 2))],
+                            True, (0, 255, 0), 3)
                     if cfg.MASK.MASK:
-                        cv2.polylines(img, [np.array(pred_bbox, np.int).reshape((-1, 1, 2))], True, (0, 255, 255), 3)
+                        cv2.polylines(img, [np.array(pred_bbox, np.int).reshape((-1, 1, 2))],
+                                True, (0, 255, 255), 3)
                     else:
                         bbox = list(map(int, pred_bbox))
                         cv2.rectangle(img, (bbox[0], bbox[1]),
@@ -143,7 +148,7 @@ def main():
                 tic = cv2.getTickCount()
                 if idx == 0:
                     cx, cy, w, h = get_axis_aligned_bbox(np.array(gt_bbox))
-                    gt_bbox_ = [cx-(w-1)/2, cy-(h-1)/2, w, h] 
+                    gt_bbox_ = [cx-(w-1)/2, cy-(h-1)/2, w, h]
                     tracker.init(img, gt_bbox_)
                     pred_bbox = gt_bbox_
                     scores.append(None)
@@ -173,21 +178,21 @@ def main():
             toc /= cv2.getTickFrequency()
             # save results
             if 'VOT2018-LT' == args.dataset:
-                video_path = os.path.join('results', args.dataset, model_name, 
+                video_path = os.path.join('results', args.dataset, model_name,
                         'longterm', video.name)
                 if not os.path.isdir(video_path):
                     os.makedirs(video_path)
-                result_path = os.path.join(video_path, 
+                result_path = os.path.join(video_path,
                         '{}_001.txt'.format(video.name))
                 with open(result_path, 'w') as f:
                     for x in pred_bboxes:
                         f.write(','.join([str(i) for i in x])+'\n')
-                result_path = os.path.join(video_path, 
+                result_path = os.path.join(video_path,
                         '{}_001_confidence.value'.format(video.name))
                 with open(result_path, 'w') as f:
                     for x in scores:
                         f.write('\n') if x is None else f.write("{:.6f}\n".format(x))
-                result_path = os.path.join(video_path, 
+                result_path = os.path.join(video_path,
                         '{}_time.txt'.format(video.name))
                 with open(result_path, 'w') as f:
                     for x in track_times:
@@ -200,7 +205,7 @@ def main():
                 with open(result_path, 'w') as f:
                     for x in pred_bboxes:
                         f.write(','.join([str(i) for i in x])+'\n')
-                result_path = os.path.join(video_path, 
+                result_path = os.path.join(video_path,
                         '{}_time.txt'.format(video.name))
                 with open(result_path, 'w') as f:
                     for x in track_times:
@@ -216,5 +221,6 @@ def main():
             print('({:3d}) Video: {:12s} Time: {:5.1f}s Speed: {:3.1f}fps'.format(
                 v_idx+1, video.name, toc, idx / toc))
 
-if __name__ == '__main__': 
+
+if __name__ == '__main__':
     main()

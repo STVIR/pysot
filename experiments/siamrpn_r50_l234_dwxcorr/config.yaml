@@ -1,21 +1,26 @@
 META_ARC: "siamrpn_r50_l234_dwxcorr"
 
 BACKBONE:
-    TYPE: "pysot.models.backbone.resnet_atrous.resnet50"
-    LAYERS: [2, 3, 4]
-    CHANNELS: [512, 1024, 2048]
+    TYPE: "resnet50"
+    KWARGS:
+        used_layers: [2, 3, 4]
 
 ADJUST:
     ADJUST: true
-    TYPE: "pysot.models.neck.neck.AdjustAllLayer"
-    ADJUST_CHANNEL: [256, 256, 256]
+    TYPE: "AdjustAllLayer"
+    KWARGS:
+        in_channels: [512, 1024, 2048]
+        out_channels: [256, 256, 256]
 
 RPN:
-    TYPE: 'pysot.models.head.rpn.MultiRPN'
-    WEIGHTED: True
+    TYPE: 'MultiRPN'
+    KWARGS:
+        anchor_num: 5
+        in_channels: [256, 256, 256]
+        weighted: true
 
 MASK:
-    MASK: False
+    MASK: false
 
 ANCHOR:
     STRIDE: 8
@@ -24,7 +29,7 @@ ANCHOR:
     ANCHOR_NUM: 5
 
 TRACK:
-    TYPE: 'pysot.tracker.siamrpn_tracker.SiamRPNTracker'
+    TYPE: 'SiamRPNTracker'
     PENALTY_K: 0.05
     WINDOW_INFLUENCE: 0.42
     LR: 0.38

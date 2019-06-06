@@ -1,6 +1,6 @@
 # Copyright (c) SenseTime. All Rights Reserved.
 
-from __future__ import absolute_import 
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
@@ -9,7 +9,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from pysot.core.xcorr import xcorr_slow, xcorr_fast, xcorr_depthwise
+from pysot.core.xcorr import xcorr_fast, xcorr_depthwise
+from pysot.models.init_weight import init_weights
 
 class RPN(nn.Module):
     def __init__(self):
@@ -37,6 +38,7 @@ class UPChannelRPN(RPN):
 
         self.loc_adjust = nn.Conv2d(loc_output, loc_output, kernel_size=1)
 
+
     def forward(self, z_f, x_f):
         cls_kernel = self.template_cls_conv(z_f)
         loc_kernel = self.template_loc_conv(z_f)
@@ -47,6 +49,7 @@ class UPChannelRPN(RPN):
         cls = xcorr_fast(cls_feature, cls_kernel)
         loc = self.loc_adjust(xcorr_fast(loc_feature, loc_kernel))
         return cls, loc
+
 
 class DepthwiseXCorr(nn.Module):
     def __init__(self, in_channels, hidden, out_channels, kernel_size=3, hidden_kernel_size=5):
@@ -67,6 +70,7 @@ class DepthwiseXCorr(nn.Module):
                 nn.ReLU(inplace=True),
                 nn.Conv2d(hidden, out_channels, kernel_size=1)
                 )
+        
 
     def forward(self, kernel, search):
         kernel = self.conv_kernel(kernel)
@@ -77,10 +81,10 @@ class DepthwiseXCorr(nn.Module):
 
 
 class DepthwiseRPN(RPN):
-    def __init__(self, anchor_num=5, feature_in=256, feature_out=256):
+    def __init__(self, anchor_num=5, in_channels=256, out_channels=256):
         super(DepthwiseRPN, self).__init__()
-        self.cls = DepthwiseXCorr(feature_in, feature_out, 2 * anchor_num)
-        self.loc = DepthwiseXCorr(feature_in, feature_out, 4 * anchor_num)
+        self.cls = DepthwiseXCorr(in_channels, out_channels, 2 * anchor_num)
+        self.loc = DepthwiseXCorr(in_channels, out_channels, 4 * anchor_num)
 
     def forward(self, z_f, x_f):
         cls = self.cls(z_f, x_f)
@@ -93,7 +97,7 @@ class MultiRPN(RPN):
         super(MultiRPN, self).__init__()
         self.weighted = weighted
         for i in range(len(in_channels)):
-            self.add_module('rpn'+str(i+2), 
+            self.add_module('rpn'+str(i+2),
                     DepthwiseRPN(anchor_num, in_channels[i], in_channels[i]))
         if self.weighted:
             self.cls_weight = nn.Parameter(torch.ones(len(in_channels)))
