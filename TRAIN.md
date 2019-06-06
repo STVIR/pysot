@@ -14,7 +14,7 @@ Prepare training dataset, detailed preparations are listed in [training_dataset]
 * [COCO](http://cocodataset.org)
 
 ## Download pretrained backbones
-Download pretrained backbones from [Google Driver](https://drive.google.com/drive/folders/1DuXVWVYIeynAcvt9uxtkuleV6bs6e3T9) and put them in `pretrained_models` directory
+Download pretrained backbones from [Google Drive](https://drive.google.com/drive/folders/1DuXVWVYIeynAcvt9uxtkuleV6bs6e3T9) and put them in `pretrained_models` directory
 
 ## Training
 
