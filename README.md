@@ -84,8 +84,20 @@ python ../../tools/eval.py 	 \
 	--tracker_prefix 'model'   # tracker_name
 ```
 
-###  Training
+###  Training :wrench:
 See [TRAIN.md](TRAIN.md) for detailed instruction.
+
+
+### Getting Help :hammer:
+If you meet problem, try searching our GitHub issues first. We intend the issues page to be a forum in which the community collectively troubleshoots problems.
+- `ModuleNotFoundError: No module named 'pysot'`
+
+:dart:Solution: Run `export PYTHONPATH=path/to/pysot` first before you run the code.
+
+- `ImportError: cannot import name region`
+
+:dart:Solution: Build `region` by `python setup.py build_ext —-inplace` as decribled in [INSTALL.md](INSTALL.md).
+
 
 ## References
 
