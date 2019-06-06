@@ -18,6 +18,8 @@ This file documents a large collection of baselines trained with pysot. All conf
 |  <sub>siammask_r50_l3</sub>        | <sub>0.455/0.634/0.219</sub> | <sub>0.423/0.615/0.248</sub> | <sub>0.283/0.597/0.461</sub> |            -        |         -        | <sub>56</sub>  | [link](https://drive.google.com/open?id=1YbPUQVTYw_slAvk_DchvRY-7B6rnSXP9) |
 |  <sub>siamrpn_r50_l234_dwxcorr_lt</sub>  |              -               |             -                | - |            -        | <sub>0.629</sub> | <sub>20</sub>  | [link](https://drive.google.com/open?id=1lOOTedwGLbGZ7MAbqJimIcET3ANJd29A) |
 
+The models can also be downloaded from [Baidu Yun](https://pan.baidu.com/s/1GB9-aTtjG57SebraVoBfuQ) Extraction Code: j9yb
+
 Note:
 
 - speed tested on GTX-1080Ti
