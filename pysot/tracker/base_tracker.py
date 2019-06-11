@@ -1,6 +1,6 @@
 # Copyright (c) SenseTime. All Rights Reserved.
 
-from __future__ import absolute_import 
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
@@ -10,6 +10,7 @@ import numpy as np
 import torch
 
 from pysot.core.config import cfg
+
 
 class BaseTracker(object):
     """ Base tracker of single objec tracking
@@ -66,7 +67,8 @@ class SiameseTracker(BaseTracker):
 
         r, c, k = im.shape
         if any([top_pad, bottom_pad, left_pad, right_pad]):
-            te_im = np.zeros((r + top_pad + bottom_pad, c + left_pad + right_pad, k), np.uint8)
+            size = (r + top_pad + bottom_pad, c + left_pad + right_pad, k)
+            te_im = np.zeros(size, np.uint8)
             te_im[top_pad:top_pad + r, left_pad:left_pad + c, :] = im
             if top_pad:
                 te_im[0:top_pad, left_pad:left_pad + c, :] = avg_chans
@@ -76,10 +78,10 @@ class SiameseTracker(BaseTracker):
                 te_im[:, 0:left_pad, :] = avg_chans
             if right_pad:
                 te_im[:, c + left_pad:, :] = avg_chans
-            im_patch = te_im[int(context_ymin):int(context_ymax + 1), 
+            im_patch = te_im[int(context_ymin):int(context_ymax + 1),
                              int(context_xmin):int(context_xmax + 1), :]
         else:
-            im_patch = im[int(context_ymin):int(context_ymax + 1), 
+            im_patch = im[int(context_ymin):int(context_ymax + 1),
                           int(context_xmin):int(context_xmax + 1), :]
 
         if not np.array_equal(model_sz, original_sz):

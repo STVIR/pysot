@@ -1,6 +1,6 @@
 # Copyright (c) SenseTime. All Rights Reserved.
 
-from __future__ import absolute_import 
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
@@ -14,6 +14,7 @@ Corner = namedtuple('Corner', 'x1 y1 x2 y2')
 # alias
 BBox = Corner
 Center = namedtuple('Center', 'x y w h')
+
 
 def corner2center(corner):
     """ convert (x1, y1, x2, y2) to (cx, cy, w, h)
@@ -32,6 +33,7 @@ def corner2center(corner):
         w = x2 - x1
         h = y2 - y1
         return x, y, w, h
+
 
 def center2corner(center):
     """ convert (cx, cy, w, h) to (x1, y1, x2, y2)
@@ -78,16 +80,18 @@ def IoU(rect1, rect2):
     iou = inter / (area + target_a - inter)
     return iou
 
+
 def cxy_wh_2_rect(pos, sz):
     """ convert (cx, cy, w, h) to (x1, y1, w, h), 0-index
     """
     return np.array([pos[0]-sz[0]/2, pos[1]-sz[1]/2, sz[0], sz[1]])
 
+
 def rect_2_cxy_wh(rect):
     """ convert (x1, y1, w, h) to (cx, cy, w, h), 0-index
     """
     return np.array([rect[0]+rect[2]/2, rect[1]+rect[3]/2]), \
-            np.array([rect[2], rect[3]])
+        np.array([rect[2], rect[3]])
 
 
 def cxy_wh_2_rect1(pos, sz):
@@ -100,7 +104,7 @@ def rect1_2_cxy_wh(rect):
     """ convert (x1, y1, w, h) to (cx, cy, w, h), 1-index
     """
     return np.array([rect[0]+rect[2]/2-1, rect[1]+rect[3]/2-1]), \
-            np.array([rect[2], rect[3]])
+        np.array([rect[2], rect[3]])
 
 
 def get_axis_aligned_bbox(region):
@@ -114,7 +118,8 @@ def get_axis_aligned_bbox(region):
         x2 = max(region[0::2])
         y1 = min(region[1::2])
         y2 = max(region[1::2])
-        A1 = np.linalg.norm(region[0:2] - region[2:4]) * np.linalg.norm(region[2:4] - region[4:6])
+        A1 = np.linalg.norm(region[0:2] - region[2:4]) * \
+            np.linalg.norm(region[2:4] - region[4:6])
         A2 = (x2 - x1) * (y2 - y1)
         s = np.sqrt(A1 / A2)
         w = s * (x2 - x1) + 1
@@ -128,6 +133,7 @@ def get_axis_aligned_bbox(region):
         cy = y+h/2
     return cx, cy, w, h
 
+
 def get_min_max_bbox(region):
     """ convert region to (cx, cy, w, h) that represent by mim-max box
     """
@@ -139,7 +145,7 @@ def get_min_max_bbox(region):
         x2 = max(region[0::2])
         y1 = min(region[1::2])
         y2 = max(region[1::2])
-        w = x2 - x1 
+        w = x2 - x1
         h = y2 - y1
     else:
         x = region[0]

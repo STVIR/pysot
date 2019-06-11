@@ -1,17 +1,19 @@
 META_ARC: "siamrpn_alex_dwxcorr"
 
 BACKBONE:
-    TYPE: "pysot.models.backbone.alexnet.alexnet"
-    LAYERS: [-1]
-    CHANNELS: [256]
-    WIDTH_MULT: 1.
+    TYPE: "alexnetlegacy"
+    KWARGS:
+        width_mult: 1.0   
 
 ADJUST:
     ADJUST: False
 
 RPN:
-    TYPE: 'pysot.models.head.rpn.DepthwiseRPN'
-    WEIGHTED: False
+    TYPE: 'DepthwiseRPN'
+    KWARGS:
+        anchor_num: 5
+        in_channels: 256
+        out_channels: 256
 
 MASK:
     MASK: False
@@ -23,7 +25,7 @@ ANCHOR:
     ANCHOR_NUM: 5
 
 TRACK:
-    TYPE: 'pysot.tracker.siamrpn_tracker.SiamRPNTracker'
+    TYPE: 'SiamRPNTracker'
     PENALTY_K: 0.16
     WINDOW_INFLUENCE: 0.40
     LR: 0.30

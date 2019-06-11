@@ -84,7 +84,7 @@ class OTBDataset(Dataset):
     """
     def __init__(self, name, dataset_root, load_img=False):
         super(OTBDataset, self).__init__(name, dataset_root)
-        with open(os.path.join(dataset_root, name+'.json'), 'r') as f:
+        with open(os.path.join(dataset_root, name+'_new.json'), 'r') as f:
             meta_data = json.load(f)
 
         # load videos

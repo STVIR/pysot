@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 
 import os
 import argparse
-import torch
 
 from glob import glob
 from tqdm import tqdm
@@ -16,25 +15,32 @@ from toolkit.evaluation import OPEBenchmark, AccuracyRobustnessBenchmark, \
         EAOBenchmark, F1Benchmark
 
 parser = argparse.ArgumentParser(description='tracking evaluation')
-parser.add_argument('--tracker_path', '-p', type=str, help='tracker result path')
-parser.add_argument('--dataset', '-d', type=str, help='dataset name')
-parser.add_argument('--num', '-n', default=1, type=int, help='number of thread to eval')
-parser.add_argument('--tracker_prefix', '-t', default='', type=str, help='tracker name')
-parser.add_argument('--show_video_level', '-s', dest='show_video_level', action='store_true')
+parser.add_argument('--tracker_path', '-p', type=str,
+                    help='tracker result path')
+parser.add_argument('--dataset', '-d', type=str,
+                    help='dataset name')
+parser.add_argument('--num', '-n', default=1, type=int,
+                    help='number of thread to eval')
+parser.add_argument('--tracker_prefix', '-t', default='',
+                    type=str, help='tracker name')
+parser.add_argument('--show_video_level', '-s', dest='show_video_level',
+                    action='store_true')
 parser.set_defaults(show_video_level=False)
 args = parser.parse_args()
 
-torch.set_num_threads(1)
 
 def main():
     tracker_dir = os.path.join(args.tracker_path, args.dataset)
-    trackers = glob(os.path.join(args.tracker_path, args.dataset, args.tracker_prefix+'*'))
+    trackers = glob(os.path.join(args.tracker_path,
+                                 args.dataset,
+                                 args.tracker_prefix+'*'))
     trackers = [x.split('/')[-1] for x in trackers]
 
     assert len(trackers) > 0
     args.num = min(args.num, len(trackers))
 
-    root = os.path.realpath(os.path.join(os.path.dirname(__file__), '../testing_dataset'))
+    root = os.path.realpath(os.path.join(os.path.dirname(__file__),
+                            '../testing_dataset'))
     root = os.path.join(root, args.dataset)
     if 'OTB' in args.dataset:
         dataset = OTBDataset(args.dataset, root)
@@ -134,6 +140,7 @@ def main():
                 f1_result.update(ret)
         benchmark.show_result(f1_result,
                 show_video_level=args.show_video_level)
+
 
 if __name__ == '__main__':
     main()
