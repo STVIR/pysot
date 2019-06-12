@@ -32,9 +32,9 @@ class UPChannelRPN(RPN):
                 feature_in * loc_output, kernel_size=3)
 
         self.search_cls_conv = nn.Conv2d(feature_in, 
-                feature_in * cls_output, kernel_size=3)
+                feature_in, kernel_size=3)
         self.search_loc_conv = nn.Conv2d(feature_in, 
-                feature_in * loc_output, kernel_size=3)
+                feature_in, kernel_size=3)
 
         self.loc_adjust = nn.Conv2d(loc_output, loc_output, kernel_size=1)
 
