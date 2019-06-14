@@ -1,10 +1,8 @@
 
 import json
 import os
-import numpy as np
 
 from tqdm import tqdm
-from glob import glob
 
 from .dataset import Dataset
 from .video import Video
@@ -57,7 +55,7 @@ class GOT10kDataset(Dataset):
     """
     def __init__(self, name, dataset_root, load_img=False):
         super(GOT10kDataset, self).__init__(name, dataset_root)
-        with open(os.path.join(dataset_root, name+'_new.json'), 'r') as f:
+        with open(os.path.join(dataset_root, name+'.json'), 'r') as f:
             meta_data = json.load(f)
 
         # load videos
