@@ -227,7 +227,7 @@ def train(train_loader, model, optimizer, lr_scheduler, tb_writer):
         batch_info = {}
         batch_info['batch_time'] = average_reduce(batch_time)
         batch_info['data_time'] = average_reduce(data_time)
-        for k, v in outputs.items():
+        for k, v in sorted(outputs.items()):
             batch_info[k] = average_reduce(v.data.item())
 
         average_meter.update(**batch_info)
