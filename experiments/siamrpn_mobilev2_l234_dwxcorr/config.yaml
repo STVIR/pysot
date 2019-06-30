@@ -18,7 +18,7 @@ RPN:
     KWARGS:
         anchor_num: 5
         in_channels: [256, 256, 256]
-        weighted: True
+        weighted: False
 
 MASK:
     MASK: False
