@@ -89,7 +89,8 @@ See [TRAIN.md](TRAIN.md) for detailed instruction.
 
 
 ### Getting Help :hammer:
-If you meet problem, try searching our GitHub issues first. We intend the issues page to be a forum in which the community collectively troubleshoots problems.
+If you meet problem, try searching our GitHub issues first. We intend the issues page to be a forum in which the community collectively troubleshoots problems. But please do **not** post **duplicate** issues. If you have similar issue that has been closed, you can reopen it.
+
 - `ModuleNotFoundError: No module named 'pysot'`
 
 :dart:Solution: Run `export PYTHONPATH=path/to/pysot` first before you run the code.
