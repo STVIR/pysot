@@ -302,7 +302,10 @@ def main():
             '{} is not a valid file.'.format(cfg.TRAIN.RESUME)
         model, optimizer, cfg.TRAIN.START_EPOCH = \
             restore_from(model, optimizer, cfg.TRAIN.RESUME)
-        dist_model = DistModule(model)
+    # load pretrain
+    elif cfg.TRAIN.PRETRAINED:
+        load_pretrain(model, cfg.TRAIN.PRETRAINED)
+    dist_model = DistModule(model)
 
     logger.info(lr_scheduler)
     logger.info("model prepare done")

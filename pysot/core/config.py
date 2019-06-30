@@ -47,6 +47,8 @@ __C.TRAIN.OUTPUT_SIZE = 25
 
 __C.TRAIN.RESUME = ''
 
+__C.TRAIN.PRETRAINED = ''
+
 __C.TRAIN.LOG_DIR = './logs'
 
 __C.TRAIN.SNAPSHOT_DIR = './snapshot'
