@@ -26,6 +26,8 @@ cd experiments/siamrpn_r50_l234_dwxcorr_8gpu
 
 ### Multi-processing Distributed Data Parallel Training
 
+Please refer to [Pytorch distributed training for detailed understanding](https://pytorch.org/docs/stable/distributed.html)
+
 #### Single node, multiple GPUs:
 ```bash
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
