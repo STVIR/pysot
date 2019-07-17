@@ -9,7 +9,7 @@ export PYTHONPATH=/path/to/pysot:$PYTHONPATH
 ## Prepare training dataset
 Prepare training dataset, detailed preparations are listed in [training_dataset](training_dataset) directory.
 * [VID](http://image-net.org/challenges/LSVRC/2017/)
-* [YOUTUBEBB](https://research.google.com/youtube-bb/) 
+* [YOUTUBEBB](https://research.google.com/youtube-bb/) (New link for cropped data, [BaiduYun](https://pan.baidu.com/s/1xvgzU0pjQXXgVeJnK7vHSg), extract code: 6dd5. **NOTE: Data in old link is not correct. Please use cropped data in this new link.**)
 * [DET](http://image-net.org/challenges/LSVRC/2017/)
 * [COCO](http://cocodataset.org)
 
