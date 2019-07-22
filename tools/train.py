@@ -274,7 +274,6 @@ def main():
 
     # create model
     model = ModelBuilder().cuda().train()
-    dist_model = DistModule(model)
 
     # load pretrained backbone weights
     if cfg.BACKBONE.PRETRAINED:
@@ -292,7 +291,7 @@ def main():
     train_loader = build_data_loader()
 
     # build optimizer and lr_scheduler
-    optimizer, lr_scheduler = build_opt_lr(dist_model.module,
+    optimizer, lr_scheduler = build_opt_lr(model,
                                            cfg.TRAIN.START_EPOCH)
 
     # resume training
