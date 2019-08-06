@@ -128,6 +128,8 @@ class MobileNetV2(nn.Sequential):
             outputs.append(x)
         p0, p1, p2, p3, p4 = [outputs[i] for i in [1, 2, 3, 5, 7]]
         out = [outputs[i] for i in self.used_layers]
+        if len(out) == 1:
+            return out[0]
         return out
 
 
