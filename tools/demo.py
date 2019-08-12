@@ -38,7 +38,8 @@ def get_frames(video_name):
             else:
                 break
     elif video_name.endswith('avi') or \
-        video_name.endswith('mp4'):
+        video_name.endswith('mp4') or \
+        video_name.endswith('MOV'):
         cap = cv2.VideoCapture(args.video_name)
         while True:
             ret, frame = cap.read()
