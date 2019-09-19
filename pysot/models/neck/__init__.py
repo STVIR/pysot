@@ -9,11 +9,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from pysot.models.neck.neck import AdjustLayer, AdjustAllLayer
+from pysot.models.neck.neck import AdjustLayer, AdjustAllLayer, AdjustAllLayerForJit
 
 NECKS = {
          'AdjustLayer': AdjustLayer,
-         'AdjustAllLayer': AdjustAllLayer
+         'AdjustAllLayer': AdjustAllLayer,
+         'AdjustAllLayerForJit': AdjustAllLayerForJit
         }
 
 def get_neck(name, **kwargs):

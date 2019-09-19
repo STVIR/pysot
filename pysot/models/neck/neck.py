@@ -50,3 +50,14 @@ class AdjustAllLayer(nn.Module):
                 adj_layer = getattr(self, 'downsample'+str(i+2))
                 out.append(adj_layer(features[i]))
             return out
+
+
+class AdjustAllLayerForJit(nn.Module):
+    def __init__(self, in_channels, out_channels, center_size=7):
+        super(AdjustAllLayerForJit, self).__init__()
+        self.num = len(out_channels)
+        self.downsample = AdjustLayer(in_channels[0], out_channels[0], center_size)
+
+
+    def forward(self, features):
+        return self.downsample(features)

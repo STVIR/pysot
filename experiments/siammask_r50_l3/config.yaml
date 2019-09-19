@@ -7,7 +7,7 @@ BACKBONE:
 
 ADJUST:
     ADJUST: true
-    TYPE: "AdjustAllLayer"
+    TYPE: "AdjustAllLayerForJit"
     KWARGS:
         in_channels: [1024]
         out_channels: [256]

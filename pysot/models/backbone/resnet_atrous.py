@@ -100,8 +100,9 @@ class Bottleneck(nn.Module):
         out = self.conv3(out)
         out = self.bn3(out)
 
-        if self.downsample is not None:
-            residual = self.downsample(x)
+        #TODO: comment out for script
+        #if self.downsample is not None:
+        #    residual = self.downsample(x)
 
         out += residual
 
@@ -111,7 +112,7 @@ class Bottleneck(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, layers, used_layers):
+    def old__init__(self, block, layers, used_layers):
         self.inplanes = 64
         super(ResNet, self).__init__()
         self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=0,  # 3
@@ -140,6 +141,36 @@ class ResNet(nn.Module):
             self.feature_size = 512 * block.expansion
         else:
             self.layer4 = lambda x: x  # identity
+
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, math.sqrt(2. / n))
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+
+    # revise for jit
+    def __init__(self, block, layers, used_layers):
+        self.inplanes = 64
+        super(ResNet, self).__init__()
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=0,  # 3
+                               bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.relu = nn.ReLU(inplace=True)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.layer1 = self._make_layer(block, 64, layers[0])
+        self.layer2 = self._make_layer(block, 128, layers[1], stride=2)
+
+        self.feature_size = 128 * block.expansion
+        self.used_layers = used_layers
+        #layer3 = True
+        #layer4 = False
+
+        self.layer3 = self._make_layer(block, 256, layers[2],
+                                       stride=1, dilation=2)  # 15x15, 7x7
+        self.layer4 = lambda x: x  # identity
+        self.feature_size = (256 + 128) * block.expansion
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -191,13 +222,16 @@ class ResNet(nn.Module):
         p1 = self.layer1(x)
         p2 = self.layer2(p1)
         p3 = self.layer3(p2)
-        p4 = self.layer4(p3)
-        out = [x_, p1, p2, p3, p4]
+        #TODO: comment out for jit
+        #p4 = self.layer4(p3)
+        #out = [x_, p1, p2, p3, p4]
+        out = [x_, p1, p2, p3]
         out = [out[i] for i in self.used_layers]
-        if len(out) == 1:
-            return out[0]
-        else:
-            return out
+        #if len(out) == 1:
+        #    return out[0]
+        #else:
+        #    return out
+        return out
 
 
 def resnet18(**kwargs):

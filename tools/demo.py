@@ -15,7 +15,7 @@ from pysot.core.config import cfg
 from pysot.models.model_builder import ModelBuilder
 from pysot.tracker.tracker_builder import build_tracker
 
-torch.set_num_threads(1)
+torch.set_num_threads(2)
 
 parser = argparse.ArgumentParser(description='tracking demo')
 parser.add_argument('--config', type=str, help='config file')
@@ -69,6 +69,8 @@ def main():
     model.load_state_dict(torch.load(args.snapshot,
         map_location=lambda storage, loc: storage.cpu()))
     model.eval().to(device)
+
+    model.save_script("/home/fsai04/Downloads/pysot_model")
 
     # build tracker
     tracker = build_tracker(model)
