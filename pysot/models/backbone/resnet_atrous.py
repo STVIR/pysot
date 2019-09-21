@@ -13,6 +13,13 @@ def conv3x3(in_planes, out_planes, stride=1, dilation=1):
                      padding=dilation, bias=False, dilation=dilation)
 
 
+class IdentityBlock(nn.Module):
+    def __init__(self):
+        super(IdentityBlock, self).__init__()
+
+    def forward(self, x):
+        return x
+
 class BasicBlock(nn.Module):
     expansion = 1
 
@@ -83,11 +90,15 @@ class Bottleneck(nn.Module):
         self.conv3 = nn.Conv2d(planes, planes * 4, kernel_size=1, bias=False)
         self.bn3 = nn.BatchNorm2d(planes * 4)
         self.relu = nn.ReLU(inplace=True)
-        self.downsample = downsample
+        if downsample is not None:
+            self.downsample = downsample
+        else:
+            self.downsample = IdentityBlock()
+
         self.stride = stride
 
     def forward(self, x):
-        residual = x
+        #residual = x
 
         out = self.conv1(x)
         out = self.bn1(out)
@@ -101,8 +112,8 @@ class Bottleneck(nn.Module):
         out = self.bn3(out)
 
         #TODO: comment out for script
-        #if self.downsample is not None:
-        #    residual = self.downsample(x)
+        if self.downsample is not None:
+            residual = self.downsample(x)
 
         out += residual
 
@@ -204,6 +215,11 @@ class ResNet(nn.Module):
                     nn.BatchNorm2d(planes * block.expansion),
                 )
 
+        if downsample is None:
+            downsample = nn.Sequential(
+                IdentityBlock(self.in_channels)
+            )
+
         layers = []
         layers.append(block(self.inplanes, planes, stride,
                             downsample, dilation=dilation))
@@ -226,7 +242,8 @@ class ResNet(nn.Module):
         #p4 = self.layer4(p3)
         #out = [x_, p1, p2, p3, p4]
         out = [x_, p1, p2, p3]
-        out = [out[i] for i in self.used_layers]
+        #out = [out[i] for i in self.used_layers]
+
         #if len(out) == 1:
         #    return out[0]
         #else:
