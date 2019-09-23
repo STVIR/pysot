@@ -18,7 +18,8 @@ def xcorr_slow(x, kernel):
         px = x[i]
         pk = kernel[i]
         px = px.view(1, px.size()[0], px.size()[1], px.size()[2])
-        pk = pk.view(-1, px.size()[1], pk.size()[1], pk.size()[2])
+        # px.size(0) or x.size(1)
+        pk = pk.view(-1, px.size()[0], pk.size()[1], pk.size()[2])
         po = F.conv2d(px, pk)
         out.append(po)
     out = torch.cat(out, 0)
