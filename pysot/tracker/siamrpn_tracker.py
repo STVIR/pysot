@@ -37,8 +37,9 @@ class SiamRPNTracker(SiameseTracker):
         anchor_num = anchor.shape[0]
         anchor = np.tile(anchor, score_size * score_size).reshape((-1, 4))
         ori = - (score_size // 2) * total_stride
-        xx, yy = np.meshgrid([ori + total_stride * dx for dx in range(score_size)],
-                             [ori + total_stride * dy for dy in range(score_size)])
+        xlist = [ori + total_stride * dx for dx in range(score_size)]
+        ylist = [ori + total_stride * dy for dy in range(score_size)]
+        xx, yy = np.meshgrid(xlist, ylist)
         xx, yy = np.tile(xx.flatten(), (anchor_num, 1)).flatten(), \
             np.tile(yy.flatten(), (anchor_num, 1)).flatten()
         anchor[:, 0], anchor[:, 1] = xx.astype(np.float32), yy.astype(np.float32)
