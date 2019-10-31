@@ -90,6 +90,7 @@ class SiameseTracker(BaseTracker):
         im_patch = im_patch[np.newaxis, :, :, :]
         im_patch = im_patch.astype(np.float32)
         im_patch = torch.from_numpy(im_patch)
+        print("shape {}".format(im_patch.size()))
         if cfg.CUDA:
             im_patch = im_patch.cuda()
         return im_patch

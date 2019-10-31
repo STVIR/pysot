@@ -84,12 +84,14 @@ def main():
     for frame in get_frames(args.video_name):
         if first_frame:
             try:
-                init_rect = cv2.selectROI(video_name, frame, False, False)
+                #init_rect = cv2.selectROI(video_name, frame, False, False)
+                init_rect = [1554, 1142, 120, 110]
             except:
                 exit()
             tracker.init(frame, init_rect)
             first_frame = False
-        else:
+
+#        else:
             outputs = tracker.track(frame)
             if 'polygon' in outputs:
                 polygon = np.array(outputs['polygon']).astype(np.int32)

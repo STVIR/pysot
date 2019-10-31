@@ -96,7 +96,7 @@ class SiamMaskTracker(SiamRPNTracker):
 
         # scale penalty
         s_c = change(sz(pred_bbox[2, :], pred_bbox[3, :]) /
-                     (sz(self.size[0]*scale_z, self.size[1]*scale_z)))
+                    (sz(self.size[0]*scale_z, self.size[1]*scale_z)))
         # aspect ratio penalty
         r_c = change((self.size[0] / self.size[1]) /
                      (pred_bbox[2, :] / pred_bbox[3, :]))
