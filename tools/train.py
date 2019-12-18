@@ -72,6 +72,11 @@ def build_data_loader():
 
 
 def build_opt_lr(model, current_epoch=0):
+    for param in model.backbone.parameters():
+        param.requires_grad = False
+    for m in model.backbone.modules():
+        if isinstance(m, nn.BatchNorm2d):
+            m.eval()
     if current_epoch >= cfg.BACKBONE.TRAIN_EPOCH:
         for layer in cfg.BACKBONE.TRAIN_LAYERS:
             for param in getattr(model.backbone, layer).parameters():
@@ -79,12 +84,6 @@ def build_opt_lr(model, current_epoch=0):
             for m in getattr(model.backbone, layer).modules():
                 if isinstance(m, nn.BatchNorm2d):
                     m.train()
-    else:
-        for param in model.backbone.parameters():
-            param.requires_grad = False
-        for m in model.backbone.modules():
-            if isinstance(m, nn.BatchNorm2d):
-                m.eval()
 
     trainable_params = []
     trainable_params += [{'params': filter(lambda x: x.requires_grad,
