@@ -58,7 +58,7 @@ def get_frames(video_name):
 def main():
     # load config
     cfg.merge_from_file(args.config)
-    cfg.CUDA = torch.cuda.is_available()
+    cfg.CUDA = torch.cuda.is_available() and cfg.CUDA
     device = torch.device('cuda' if cfg.CUDA else 'cpu')
 
     # create model
