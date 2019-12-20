@@ -20,8 +20,8 @@ class Anchors:
         self.stride = stride
         self.ratios = ratios
         self.scales = scales
-        self.image_center = 0
-        self.size = 0
+        self.image_center = image_center
+        self.size = size
 
         self.anchor_num = len(self.scales) * len(self.ratios)
 
