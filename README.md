@@ -128,6 +128,7 @@ If you meet problem, try searching our GitHub issues first. We intend the issues
 - [Qiang Wang](http://www.robots.ox.ac.uk/~qwang/)
 - [Bo Li](http://bo-li.info/)
 - [Zhiyuan Chen](https://zyc.ai/)
+- [Jinghao Zhou](https://shallowtoil.github.io/)
 
 ## License
 
