@@ -50,7 +50,7 @@ class VOTVideo(Video):
 
         self.tag_names = list(self.tags.keys())
         if not load_img:
-            img_name = os.path.join(root, self.img_names[0])
+            img_name = os.path.join(os.path.abspath(root), os.path.abspath(self.img_names[0]))
             img = np.array(Image.open(img_name), np.uint8)
             self.width = img.shape[1]
             self.height = img.shape[0]
