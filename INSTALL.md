@@ -22,7 +22,7 @@ conda activate pysot
 
 #### Install numpy/pytorch/opencv
 ```
-conda install numpy
+conda install 'numpy<1.24'
 conda install pytorch=0.4.1 torchvision cuda90 -c pytorch
 pip install opencv-python
 ```
