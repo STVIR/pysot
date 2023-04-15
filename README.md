@@ -33,7 +33,7 @@ Evaluation toolkit can support the following datasets:
 :paperclip: [VOT16/18/19](http://votchallenge.net) 
 :paperclip: [VOT18-LT](http://votchallenge.net/vot2018/index.html) 
 :paperclip: [LaSOT](https://arxiv.org/pdf/1809.07845.pdf) 
-:paperclip: [UAV123](https://arxiv.org/pdf/1804.00518.pdf)
+:paperclip: [UAV123](https://cemse.kaust.edu.sa/ivul/uav123)
 
 ## Model Zoo and Baselines
 
