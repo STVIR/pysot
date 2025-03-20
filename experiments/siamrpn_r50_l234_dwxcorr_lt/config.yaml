@@ -1,23 +1,26 @@
-META_ARC: "siamrpn_r50_l234_dwxcorr_lt"
+META_ARC: "siamrpn_r50_l234_dwxcorr"
 
 BACKBONE:
     TYPE: "resnet50"
     KWARGS:
         used_layers: [2, 3, 4]
+    CHANNELS: [512, 1024, 2048]
 
 ADJUST:
     ADJUST: true
     TYPE: "AdjustAllLayer"
+    ADJUST_CHANNEL: [128, 256, 512]
     KWARGS:
         in_channels: [512, 1024, 2048]
         out_channels: [128, 256, 512]
 
 RPN:
     TYPE: 'MultiRPN'
+    WEIGHTED: True
     KWARGS:
         anchor_num: 5
         in_channels: [128, 256, 512]
-        weighted: True
+        weighted: true
 
 MASK:
     MASK: False
