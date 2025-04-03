@@ -1,0 +1,35 @@
+META_ARC: "siamrpn_alex_dwxcorr"
+
+BACKBONE:
+    TYPE: "alexnetlegacy"
+    KWARGS:
+        width_mult: 1.0   
+
+ADJUST:
+    ADJUST: False
+
+RPN:
+    TYPE: 'DepthwiseRPN'
+    KWARGS:
+        anchor_num: 5
+        in_channels: 256
+        out_channels: 256
+
+MASK:
+    MASK: False
+
+ANCHOR:
+    STRIDE: 8
+    RATIOS: [0.33, 0.5, 1, 2, 3]
+    SCALES: [8]
+    ANCHOR_NUM: 5
+
+TRACK:
+    TYPE: 'SiamRPNTracker'
+    PENALTY_K: 0.16
+    WINDOW_INFLUENCE: 0.40
+    LR: 0.30
+    EXEMPLAR_SIZE: 127
+    INSTANCE_SIZE: 287
+    BASE_SIZE: 0
+    CONTEXT_AMOUNT: 0.5

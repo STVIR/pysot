@@ -38,11 +38,11 @@ Evaluation toolkit can support the following datasets:
 
 ## Model Zoo and Baselines
 
-We provide a large set of baseline results and trained models available for download in the [PySOT Model Zoo](MODEL_ZOO.md).
+We provide a large set of baseline results and trained models available for download in the [PySOT Model Zoo](./asset/MODEL_ZOO.md).
 
 ## Installation
 
-Please find installation instructions for PyTorch and PySOT in [`INSTALL.md`](INSTALL.md).
+Please find installation instructions for PyTorch and PySOT in [`INSTALL.md`](./asset/INSTALL.md).
 
 ## Quick Start: Using PySOT
 
@@ -52,7 +52,7 @@ export PYTHONPATH=/path/to/pysot:$PYTHONPATH
 ```
 
 ### Download models
-Download models in [PySOT Model Zoo](MODEL_ZOO.md) and put the model.pth in the correct directory in experiments
+Download models in [PySOT Model Zoo](./asset/MODEL_ZOO.md) and put the model.pth in the correct directory in experiments
 
 ### Webcam demo
 ```bash
