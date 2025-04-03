@@ -1,9 +1,6 @@
 # Copyright (c) SenseTime. All Rights Reserved.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from yacs.config import CfgNode as CN
 
@@ -45,13 +42,13 @@ __C.TRAIN.BASE_SIZE = 8
 
 __C.TRAIN.OUTPUT_SIZE = 25
 
-__C.TRAIN.RESUME = ''
+__C.TRAIN.RESUME = ""
 
-__C.TRAIN.PRETRAINED = ''
+__C.TRAIN.PRETRAINED = ""
 
-__C.TRAIN.LOG_DIR = './logs'
+__C.TRAIN.LOG_DIR = "./logs"
 
-__C.TRAIN.SNAPSHOT_DIR = './snapshot'
+__C.TRAIN.SNAPSHOT_DIR = "./snapshot"
 
 __C.TRAIN.EPOCH = 20
 
@@ -81,7 +78,7 @@ __C.TRAIN.BASE_LR = 0.005
 
 __C.TRAIN.LR = CN()
 
-__C.TRAIN.LR.TYPE = 'log'
+__C.TRAIN.LR.TYPE = "log"
 
 __C.TRAIN.LR.KWARGS = CN(new_allowed=True)
 
@@ -89,7 +86,7 @@ __C.TRAIN.LR_WARMUP = CN()
 
 __C.TRAIN.LR_WARMUP.WARMUP = True
 
-__C.TRAIN.LR_WARMUP.TYPE = 'step'
+__C.TRAIN.LR_WARMUP.TYPE = "step"
 
 __C.TRAIN.LR_WARMUP.EPOCH = 5
 
@@ -135,29 +132,29 @@ __C.DATASET.NEG = 0.2
 # improve tracking performance for otb100
 __C.DATASET.GRAY = 0.0
 
-__C.DATASET.NAMES = ('VID', 'COCO', 'DET', 'YOUTUBEBB')
+__C.DATASET.NAMES = ("VID", "COCO", "DET", "YOUTUBEBB")
 
 __C.DATASET.VID = CN()
-__C.DATASET.VID.ROOT = 'training_dataset/vid/crop511'
-__C.DATASET.VID.ANNO = 'training_dataset/vid/train.json'
+__C.DATASET.VID.ROOT = "training_dataset/vid/crop511"
+__C.DATASET.VID.ANNO = "training_dataset/vid/train.json"
 __C.DATASET.VID.FRAME_RANGE = 100
 __C.DATASET.VID.NUM_USE = 100000  # repeat until reach NUM_USE
 
 __C.DATASET.YOUTUBEBB = CN()
-__C.DATASET.YOUTUBEBB.ROOT = 'training_dataset/yt_bb/crop511'
-__C.DATASET.YOUTUBEBB.ANNO = 'training_dataset/yt_bb/train.json'
+__C.DATASET.YOUTUBEBB.ROOT = "training_dataset/yt_bb/crop511"
+__C.DATASET.YOUTUBEBB.ANNO = "training_dataset/yt_bb/train.json"
 __C.DATASET.YOUTUBEBB.FRAME_RANGE = 3
 __C.DATASET.YOUTUBEBB.NUM_USE = -1  # use all not repeat
 
 __C.DATASET.COCO = CN()
-__C.DATASET.COCO.ROOT = 'training_dataset/coco/crop511'
-__C.DATASET.COCO.ANNO = 'training_dataset/coco/train2017.json'
+__C.DATASET.COCO.ROOT = "training_dataset/coco/crop511"
+__C.DATASET.COCO.ANNO = "training_dataset/coco/train2017.json"
 __C.DATASET.COCO.FRAME_RANGE = 1
 __C.DATASET.COCO.NUM_USE = -1
 
 __C.DATASET.DET = CN()
-__C.DATASET.DET.ROOT = 'training_dataset/det/crop511'
-__C.DATASET.DET.ANNO = 'training_dataset/det/train.json'
+__C.DATASET.DET.ROOT = "training_dataset/det/crop511"
+__C.DATASET.DET.ANNO = "training_dataset/det/train.json"
 __C.DATASET.DET.FRAME_RANGE = 1
 __C.DATASET.DET.NUM_USE = -1
 
@@ -168,15 +165,15 @@ __C.DATASET.VIDEOS_PER_EPOCH = 600000
 __C.BACKBONE = CN()
 
 # Backbone type, current only support resnet18,34,50;alexnet;mobilenet
-__C.BACKBONE.TYPE = 'res50'
+__C.BACKBONE.TYPE = "res50"
 
 __C.BACKBONE.KWARGS = CN(new_allowed=True)
 
 # Pretrained backbone weights
-__C.BACKBONE.PRETRAINED = ''
+__C.BACKBONE.PRETRAINED = ""
 
 # Train layers
-__C.BACKBONE.TRAIN_LAYERS = ['layer2', 'layer3', 'layer4']
+__C.BACKBONE.TRAIN_LAYERS = ["layer2", "layer3", "layer4"]
 
 # Layer LR
 __C.BACKBONE.LAYERS_LR = 0.1
@@ -203,7 +200,7 @@ __C.ADJUST.TYPE = "AdjustAllLayer"
 __C.RPN = CN()
 
 # RPN type
-__C.RPN.TYPE = 'MultiRPN'
+__C.RPN.TYPE = "MultiRPN"
 
 __C.RPN.KWARGS = CN(new_allowed=True)
 
@@ -251,7 +248,7 @@ __C.ANCHOR.ANCHOR_NUM = len(__C.ANCHOR.RATIOS) * len(__C.ANCHOR.SCALES)
 # ------------------------------------------------------------------------ #
 __C.TRACK = CN()
 
-__C.TRACK.TYPE = 'SiamRPNTracker'
+__C.TRACK.TYPE = "SiamRPNTracker"
 
 # Scale penalty
 __C.TRACK.PENALTY_K = 0.04

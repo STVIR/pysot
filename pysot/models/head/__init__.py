@@ -1,26 +1,21 @@
-# Copyright (c) SenseTime. All Rights Reserved.
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from pysot.models.head.mask import MaskCorr, Refine
-from pysot.models.head.rpn import UPChannelRPN, DepthwiseRPN, MultiRPN
+from pysot.models.head.rpn import DepthwiseRPN, MultiRPN, UPChannelRPN
 
 RPNS = {
-        'UPChannelRPN': UPChannelRPN,
-        'DepthwiseRPN': DepthwiseRPN,
-        'MultiRPN': MultiRPN
-       }
+    "UPChannelRPN": UPChannelRPN,
+    "DepthwiseRPN": DepthwiseRPN,
+    "MultiRPN": MultiRPN,
+}
 
 MASKS = {
-         'MaskCorr': MaskCorr,
-        }
+    "MaskCorr": MaskCorr,
+}
 
 REFINE = {
-          'Refine': Refine,
-         }
+    "Refine": Refine,
+}
 
 
 def get_rpn_head(name, **kwargs):

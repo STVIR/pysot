@@ -4,11 +4,11 @@
 # distutils: sources = src/region.c
 # distutils: include_dirs = src/
 
-from libc.stdlib cimport malloc, free
+cimport c_region
 from libc.stdio cimport sprintf
+from libc.stdlib cimport free, malloc
 from libc.string cimport strlen
 
-cimport c_region
 
 cpdef enum RegionType:
     EMTPY

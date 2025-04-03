@@ -1,6 +1,7 @@
 # PySOT Training Tutorial
 
 This implements training of SiamRPN with backbone architectures, such as ResNet, AlexNet.
+
 ### Add PySOT to your PYTHONPATH
 ```bash
 export PYTHONPATH=/path/to/pysot:$PYTHONPATH

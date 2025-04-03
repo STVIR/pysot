@@ -1,21 +1,16 @@
-# Copyright (c) SenseTime. All Rights Reserved.
+from __future__ import absolute_import, division, print_function, unicode_literals
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
+import logging
 import os
 import socket
-import logging
 
 import torch
-import torch.nn as nn
 import torch.distributed as dist
+import torch.nn as nn
 
 from pysot.utils.log_helper import log_once
 
-logger = logging.getLogger('global')
+logger = logging.getLogger("global")
 
 
 def average_reduce(v):
@@ -49,13 +44,13 @@ class DistModule(nn.Module):
 
 
 def broadcast_params(model):
-    """ broadcast model parameters """
+    """broadcast model parameters"""
     for p in model.state_dict().values():
         dist.broadcast(p, 0)
 
 
 def broadcast_buffers(model, method=0):
-    """ broadcast model buffers """
+    """broadcast model buffers"""
     if method == 0:
         return
 
@@ -68,22 +63,22 @@ def broadcast_buffers(model, method=0):
             dist.all_reduce(b)
             b /= world_size
         else:
-            raise Exception('Invalid buffer broadcast code {}'.format(method))
+            raise Exception("Invalid buffer broadcast code {}".format(method))
 
 
 inited = False
 
 
 def _dist_init():
-    '''
+    """
     if guess right:
         ntasks: world_size (process num)
         proc_id: rank
-    '''
-    rank = int(os.environ['RANK'])
+    """
+    rank = int(os.environ["RANK"])
     num_gpus = torch.cuda.device_count()
     torch.cuda.set_device(rank % num_gpus)
-    dist.init_process_group(backend='nccl')
+    dist.init_process_group(backend="nccl")
     world_size = dist.get_world_size()
     return rank, world_size
 
@@ -91,7 +86,7 @@ def _dist_init():
 def _get_local_ip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
+        s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
     finally:
         s.close()
@@ -103,9 +98,9 @@ def dist_init():
     try:
         rank, world_size = _dist_init()
     except RuntimeError as e:
-        if 'public' in e.args[0]:
+        if "public" in e.args[0]:
             logger.info(e)
-            logger.info('Warning: use single process')
+            logger.info("Warning: use single process")
             rank, world_size = 0, 1
         else:
             raise RuntimeError(*e.args)
@@ -115,25 +110,25 @@ def dist_init():
 
 def get_rank():
     if not inited:
-        raise(Exception('dist not inited'))
+        raise (Exception("dist not inited"))
     return rank
 
 
 def get_world_size():
     if not inited:
-        raise(Exception('dist not inited'))
+        raise (Exception("dist not inited"))
     return world_size
 
 
-def reduce_gradients(model, _type='sum'):
-    types = ['sum', 'avg']
+def reduce_gradients(model, _type="sum"):
+    types = ["sum", "avg"]
     assert _type in types, 'gradients method must be in "{}"'.format(types)
     log_once("gradients method is {}".format(_type))
     if get_world_size() > 1:
         for param in model.parameters():
             if param.requires_grad:
                 dist.all_reduce(param.grad.data)
-                if _type == 'avg':
+                if _type == "avg":
                     param.grad.data /= get_world_size()
     else:
         return None

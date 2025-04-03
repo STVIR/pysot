@@ -1,9 +1,4 @@
-# Copyright (c) SenseTime. All Rights Reserved.
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 
 class Meter(object):
@@ -23,6 +18,7 @@ class Meter(object):
 
 class AverageMeter:
     """Computes and stores the average and current value"""
+
     def __init__(self, num=100):
         self.num = num
         self.reset()
@@ -65,16 +61,17 @@ class AverageMeter:
                     self.count[k] -= 1
 
     def __repr__(self):
-        s = ''
+        s = ""
         for k in self.sum:
             s += self.format_str(k)
         return s
 
     def format_str(self, attr):
         return "{name}: {val:.6f} ({avg:.6f}) ".format(
-                    name=attr,
-                    val=float(self.val[attr]),
-                    avg=float(self.sum[attr]) / self.count[attr])
+            name=attr,
+            val=float(self.val[attr]),
+            avg=float(self.sum[attr]) / self.count[attr],
+        )
 
     def __getattr__(self, attr):
         if attr in self.__dict__:
@@ -88,7 +85,7 @@ class AverageMeter:
         return float(self.sum[attr]) / self.count[attr]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     avg1 = AverageMeter(10)
     avg2 = AverageMeter(0)
     avg3 = AverageMeter(-1)
@@ -98,7 +95,7 @@ if __name__ == '__main__':
         avg2.update(s=i)
         avg3.update(s=i)
 
-        print('iter {}'.format(i))
+        print("iter {}".format(i))
         print(avg1.s)
         print(avg2.s)
         print(avg3.s)

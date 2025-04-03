@@ -1,20 +1,14 @@
-# Copyright (c) SenseTime. All Rights Reserved.
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
 
 from colorama import Fore, Style
 
-
-__all__ = ['commit', 'describe']
+__all__ = ["commit", "describe"]
 
 
 def _exec(cmd):
-    f = os.popen(cmd, 'r', 1)
+    f = os.popen(cmd, "r", 1)
     return f.read().strip()
 
 
@@ -23,13 +17,13 @@ def _bold(s):
 
 
 def _color(s):
-    return f'{Fore.RED}{s}{Style.RESET_ALL}'
+    return f"{Fore.RED}{s}{Style.RESET_ALL}"
 
 
 def _describe(model, lines=None, spaces=0):
     head = " " * spaces
     for name, p in model.named_parameters():
-        if '.' in name:
+        if "." in name:
             continue
         if p.requires_grad:
             name = _color(name)
@@ -41,15 +35,14 @@ def _describe(model, lines=None, spaces=0):
         if m.training:
             name = _color(name)
         line = "{head}.{name} ({type})".format(
-                head=head,
-                name=name,
-                type=m.__class__.__name__)
+            head=head, name=name, type=m.__class__.__name__
+        )
         lines.append(line)
         _describe(m, lines, space_num)
 
 
 def commit():
-    root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
     cmd = "cd {}; git log | head -n1 | awk '{{print $2}}'".format(root)
     commit = _exec(cmd)
     cmd = "cd {}; git log --oneline | head -n1".format(root)

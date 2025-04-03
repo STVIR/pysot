@@ -1,5 +1,6 @@
 from tqdm import tqdm
 
+
 class Dataset(object):
     def __init__(self, name, dataset_root):
         self.name = name
@@ -28,6 +29,6 @@ class Dataset(object):
         """
         self.tracker_path = path
         self.tracker_names = tracker_names
-        # for video in tqdm(self.videos.values(), 
+        # for video in tqdm(self.videos.values(),
         #         desc='loading tacker result', ncols=100):
         #     video.load_tracker(path, tracker_names)

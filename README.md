@@ -1,11 +1,12 @@
 # PySOT
 
+
 **PySOT** is a software system designed by SenseTime Video Intelligence Research team. It implements state-of-the-art single object tracking algorithms, including [SiamRPN](http://openaccess.thecvf.com/content_cvpr_2018/html/Li_High_Performance_Visual_CVPR_2018_paper.html) and [SiamMask](https://arxiv.org/abs/1812.05050). It is written in Python and powered by the [PyTorch](https://pytorch.org) deep learning framework. This project also contains a Python port of toolkit for evaluating trackers.
 
 PySOT has enabled research projects, including: [SiamRPN](http://openaccess.thecvf.com/content_cvpr_2018/html/Li_High_Performance_Visual_CVPR_2018_paper.html), [DaSiamRPN](https://arxiv.org/abs/1808.06048), [SiamRPN++](https://arxiv.org/abs/1812.11703), and [SiamMask](https://arxiv.org/abs/1812.05050).
 
 <div align="center">
-  <img src="demo/output/bag_demo.gif" width="800px" />
+  <img src="asset/demo/bag_demo.gif" width="800px" />
   <p>Example SiamFC, SiamRPN and SiamMask outputs.</p>
 </div>
 
@@ -129,6 +130,7 @@ If you meet problem, try searching our GitHub issues first. We intend the issues
 - [Bo Li](http://bo-li.info/)
 - [Zhiyuan Chen](https://zyc.ai/)
 - [Jinghao Zhou](https://shallowtoil.github.io/)
+- [Minh, Le Duc](https://github.com/MinLee0210)
 
 ## License
 

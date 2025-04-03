@@ -1,9 +1,4 @@
-# Copyright (c) SenseTime. All Rights Reserved.
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import numpy as np
 
@@ -33,8 +28,11 @@ class SiamRPNLTTracker(SiamRPNTracker):
         else:
             instance_size = cfg.TRACK.INSTANCE_SIZE
 
-        score_size = (instance_size - cfg.TRACK.EXEMPLAR_SIZE) // \
-            cfg.ANCHOR.STRIDE + 1 + cfg.TRACK.BASE_SIZE
+        score_size = (
+            (instance_size - cfg.TRACK.EXEMPLAR_SIZE) // cfg.ANCHOR.STRIDE
+            + 1
+            + cfg.TRACK.BASE_SIZE
+        )
         hanning = np.hanning(score_size)
         window = np.outer(hanning, hanning)
         window = np.tile(window.flatten(), self.anchor_num)
@@ -42,32 +40,38 @@ class SiamRPNLTTracker(SiamRPNTracker):
 
         s_x = s_z * (instance_size / cfg.TRACK.EXEMPLAR_SIZE)
 
-        x_crop = self.get_subwindow(img, self.center_pos, instance_size,
-                                    round(s_x), self.channel_average)
+        x_crop = self.get_subwindow(
+            img, self.center_pos, instance_size, round(s_x), self.channel_average
+        )
         outputs = self.model.track(x_crop)
-        score = self._convert_score(outputs['cls'])
-        pred_bbox = self._convert_bbox(outputs['loc'], anchors)
+        score = self._convert_score(outputs["cls"])
+        pred_bbox = self._convert_bbox(outputs["loc"], anchors)
 
         def change(r):
-            return np.maximum(r, 1. / r)
+            return np.maximum(r, 1.0 / r)
 
         def sz(w, h):
             pad = (w + h) * 0.5
             return np.sqrt((w + pad) * (h + pad))
 
         # scale penalty
-        s_c = change(sz(pred_bbox[2, :], pred_bbox[3, :]) /
-                     (sz(self.size[0] * scale_z, self.size[1] * scale_z)))
+        s_c = change(
+            sz(pred_bbox[2, :], pred_bbox[3, :])
+            / (sz(self.size[0] * scale_z, self.size[1] * scale_z))
+        )
         # ratio penalty
-        r_c = change((self.size[0] / self.size[1]) /
-                     (pred_bbox[2, :] / pred_bbox[3, :]))
+        r_c = change(
+            (self.size[0] / self.size[1]) / (pred_bbox[2, :] / pred_bbox[3, :])
+        )
         penalty = np.exp(-(r_c * s_c - 1) * cfg.TRACK.PENALTY_K)
         pscore = penalty * score
 
         # window
         if not self.longterm_state:
-            pscore = pscore * (1 - cfg.TRACK.WINDOW_INFLUENCE) + \
-                    window * cfg.TRACK.WINDOW_INFLUENCE
+            pscore = (
+                pscore * (1 - cfg.TRACK.WINDOW_INFLUENCE)
+                + window * cfg.TRACK.WINDOW_INFLUENCE
+            )
         else:
             pscore = pscore * (1 - 0.001) + window * 0.001
         best_idx = np.argmax(pscore)
@@ -92,19 +96,12 @@ class SiamRPNLTTracker(SiamRPNTracker):
         self.center_pos = np.array([cx, cy])
         self.size = np.array([width, height])
 
-        cx, cy, width, height = self._bbox_clip(cx, cy, width,
-                                                height, img.shape[:2])
-        bbox = [cx - width / 2,
-                cy - height / 2,
-                width,
-                height]
+        cx, cy, width, height = self._bbox_clip(cx, cy, width, height, img.shape[:2])
+        bbox = [cx - width / 2, cy - height / 2, width, height]
 
         if best_score < cfg.TRACK.CONFIDENCE_LOW:
             self.longterm_state = True
         elif best_score > cfg.TRACK.CONFIDENCE_HIGH:
             self.longterm_state = False
 
-        return {
-                'bbox': bbox,
-                'best_score': best_score
-               }
+        return {"bbox": bbox, "best_score": best_score}

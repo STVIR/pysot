@@ -1,29 +1,26 @@
 # Copyright (c) SenseTime. All Rights Reserved.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
 import logging
-import sys
 import os
+import sys
 
 import cv2
 import numpy as np
 from torch.utils.data import Dataset
 
-from pysot.utils.bbox import center2corner, Center
+from pysot.core.config import cfg
 from pysot.datasets.anchor_target import AnchorTarget
 from pysot.datasets.augmentation import Augmentation
-from pysot.core.config import cfg
+from pysot.utils.bbox import Center, center2corner
 
 logger = logging.getLogger("global")
 
 # setting opencv
 pyv = sys.version[0]
-if pyv[0] == '3':
+if pyv[0] == "3":
     cv2.ocl.setUseOpenCL(False)
 
 
@@ -31,23 +28,22 @@ class SubDataset(object):
     def __init__(self, name, root, anno, frame_range, num_use, start_idx):
         cur_path = os.path.dirname(os.path.realpath(__file__))
         self.name = name
-        self.root = os.path.join(cur_path, '../../', root)
-        self.anno = os.path.join(cur_path, '../../', anno)
+        self.root = os.path.join(cur_path, "../../", root)
+        self.anno = os.path.join(cur_path, "../../", anno)
         self.frame_range = frame_range
         self.num_use = num_use
         self.start_idx = start_idx
         logger.info("loading " + name)
-        with open(self.anno, 'r') as f:
+        with open(self.anno, "r") as f:
             meta_data = json.load(f)
             meta_data = self._filter_zero(meta_data)
 
         for video in list(meta_data.keys()):
             for track in meta_data[video]:
                 frames = meta_data[video][track]
-                frames = list(map(int,
-                              filter(lambda x: x.isdigit(), frames.keys())))
+                frames = list(map(int, filter(lambda x: x.isdigit(), frames.keys())))
                 frames.sort()
-                meta_data[video][track]['frames'] = frames
+                meta_data[video][track]["frames"] = frames
                 if len(frames) <= 0:
                     logger.warning("{}/{} has no frames".format(video, track))
                     del meta_data[video][track]
@@ -62,7 +58,7 @@ class SubDataset(object):
         self.num_use = self.num if self.num_use == -1 else self.num_use
         self.videos = list(meta_data.keys())
         logger.info("{} loaded".format(self.name))
-        self.path_format = '{}.{}.{}.jpg'
+        self.path_format = "{}.{}.{}.jpg"
         self.pick = self.shuffle()
 
     def _filter_zero(self, meta_data):
@@ -88,9 +84,11 @@ class SubDataset(object):
         return meta_data_new
 
     def log(self):
-        logger.info("{} start-index {} select [{}/{}] path_format {}".format(
-            self.name, self.start_idx, self.num_use,
-            self.num, self.path_format))
+        logger.info(
+            "{} start-index {} select [{}/{}] path_format {}".format(
+                self.name, self.start_idx, self.num_use, self.num, self.path_format
+            )
+        )
 
     def shuffle(self):
         lists = list(range(self.start_idx, self.start_idx + self.num))
@@ -98,12 +96,13 @@ class SubDataset(object):
         while len(pick) < self.num_use:
             np.random.shuffle(lists)
             pick += lists
-        return pick[:self.num_use]
+        return pick[: self.num_use]
 
     def get_image_anno(self, video, track, frame):
         frame = "{:06d}".format(frame)
-        image_path = os.path.join(self.root, video,
-                                  self.path_format.format(frame, track, 'x'))
+        image_path = os.path.join(
+            self.root, video, self.path_format.format(frame, track, "x")
+        )
         image_anno = self.labels[video][track][frame]
         return image_path, image_anno
 
@@ -113,15 +112,16 @@ class SubDataset(object):
         track = np.random.choice(list(video.keys()))
         track_info = video[track]
 
-        frames = track_info['frames']
+        frames = track_info["frames"]
         template_frame = np.random.randint(0, len(frames))
         left = max(template_frame - self.frame_range, 0)
-        right = min(template_frame + self.frame_range, len(frames)-1) + 1
+        right = min(template_frame + self.frame_range, len(frames) - 1) + 1
         search_range = frames[left:right]
         template_frame = frames[template_frame]
         search_frame = np.random.choice(search_range)
-        return self.get_image_anno(video_name, track, template_frame), \
-            self.get_image_anno(video_name, track, search_frame)
+        return self.get_image_anno(
+            video_name, track, template_frame
+        ), self.get_image_anno(video_name, track, search_frame)
 
     def get_random_target(self, index=-1):
         if index == -1:
@@ -130,7 +130,7 @@ class SubDataset(object):
         video = self.labels[video_name]
         track = np.random.choice(list(video.keys()))
         track_info = video[track]
-        frames = track_info['frames']
+        frames = track_info["frames"]
         frame = np.random.choice(frames)
         return self.get_image_anno(video_name, track, frame)
 
@@ -139,13 +139,18 @@ class SubDataset(object):
 
 
 class TrkDataset(Dataset):
-    def __init__(self,):
+    def __init__(
+        self,
+    ):
         super(TrkDataset, self).__init__()
 
-        desired_size = (cfg.TRAIN.SEARCH_SIZE - cfg.TRAIN.EXEMPLAR_SIZE) / \
-            cfg.ANCHOR.STRIDE + 1 + cfg.TRAIN.BASE_SIZE
+        desired_size = (
+            (cfg.TRAIN.SEARCH_SIZE - cfg.TRAIN.EXEMPLAR_SIZE) / cfg.ANCHOR.STRIDE
+            + 1
+            + cfg.TRAIN.BASE_SIZE
+        )
         if desired_size != cfg.TRAIN.OUTPUT_SIZE:
-            raise Exception('size not match!')
+            raise Exception("size not match!")
 
         # create anchor target
         self.anchor_target = AnchorTarget()
@@ -157,13 +162,13 @@ class TrkDataset(Dataset):
         for name in cfg.DATASET.NAMES:
             subdata_cfg = getattr(cfg.DATASET, name)
             sub_dataset = SubDataset(
-                    name,
-                    subdata_cfg.ROOT,
-                    subdata_cfg.ANNO,
-                    subdata_cfg.FRAME_RANGE,
-                    subdata_cfg.NUM_USE,
-                    start
-                )
+                name,
+                subdata_cfg.ROOT,
+                subdata_cfg.ANNO,
+                subdata_cfg.FRAME_RANGE,
+                subdata_cfg.NUM_USE,
+                start,
+            )
             start += sub_dataset.num
             self.num += sub_dataset.num_use
 
@@ -172,19 +177,19 @@ class TrkDataset(Dataset):
 
         # data augmentation
         self.template_aug = Augmentation(
-                cfg.DATASET.TEMPLATE.SHIFT,
-                cfg.DATASET.TEMPLATE.SCALE,
-                cfg.DATASET.TEMPLATE.BLUR,
-                cfg.DATASET.TEMPLATE.FLIP,
-                cfg.DATASET.TEMPLATE.COLOR
-            )
+            cfg.DATASET.TEMPLATE.SHIFT,
+            cfg.DATASET.TEMPLATE.SCALE,
+            cfg.DATASET.TEMPLATE.BLUR,
+            cfg.DATASET.TEMPLATE.FLIP,
+            cfg.DATASET.TEMPLATE.COLOR,
+        )
         self.search_aug = Augmentation(
-                cfg.DATASET.SEARCH.SHIFT,
-                cfg.DATASET.SEARCH.SCALE,
-                cfg.DATASET.SEARCH.BLUR,
-                cfg.DATASET.SEARCH.FLIP,
-                cfg.DATASET.SEARCH.COLOR
-            )
+            cfg.DATASET.SEARCH.SHIFT,
+            cfg.DATASET.SEARCH.SCALE,
+            cfg.DATASET.SEARCH.BLUR,
+            cfg.DATASET.SEARCH.FLIP,
+            cfg.DATASET.SEARCH.COLOR,
+        )
         videos_per_epoch = cfg.DATASET.VIDEOS_PER_EPOCH
         self.num = videos_per_epoch if videos_per_epoch > 0 else self.num
         self.num *= cfg.TRAIN.EPOCH
@@ -203,7 +208,7 @@ class TrkDataset(Dataset):
             m = len(pick)
         logger.info("shuffle done!")
         logger.info("dataset length {}".format(self.num))
-        return pick[:self.num]
+        return pick[: self.num]
 
     def _find_dataset(self, index):
         for dataset in self.all_dataset:
@@ -213,18 +218,18 @@ class TrkDataset(Dataset):
     def _get_bbox(self, image, shape):
         imh, imw = image.shape[:2]
         if len(shape) == 4:
-            w, h = shape[2]-shape[0], shape[3]-shape[1]
+            w, h = shape[2] - shape[0], shape[3] - shape[1]
         else:
             w, h = shape
         context_amount = 0.5
         exemplar_size = cfg.TRAIN.EXEMPLAR_SIZE
-        wc_z = w + context_amount * (w+h)
-        hc_z = h + context_amount * (w+h)
+        wc_z = w + context_amount * (w + h)
+        hc_z = h + context_amount * (w + h)
         s_z = np.sqrt(wc_z * hc_z)
         scale_z = exemplar_size / s_z
-        w = w*scale_z
-        h = h*scale_z
-        cx, cy = imw//2, imh//2
+        w = w * scale_z
+        h = h * scale_z
+        cx, cy = imw // 2, imh // 2
         bbox = center2corner(Center(cx, cy, w, h))
         return bbox
 
@@ -254,26 +259,25 @@ class TrkDataset(Dataset):
         search_box = self._get_bbox(search_image, search[1])
 
         # augmentation
-        template, _ = self.template_aug(template_image,
-                                        template_box,
-                                        cfg.TRAIN.EXEMPLAR_SIZE,
-                                        gray=gray)
+        template, _ = self.template_aug(
+            template_image, template_box, cfg.TRAIN.EXEMPLAR_SIZE, gray=gray
+        )
 
-        search, bbox = self.search_aug(search_image,
-                                       search_box,
-                                       cfg.TRAIN.SEARCH_SIZE,
-                                       gray=gray)
+        search, bbox = self.search_aug(
+            search_image, search_box, cfg.TRAIN.SEARCH_SIZE, gray=gray
+        )
 
         # get labels
         cls, delta, delta_weight, overlap = self.anchor_target(
-                bbox, cfg.TRAIN.OUTPUT_SIZE, neg)
+            bbox, cfg.TRAIN.OUTPUT_SIZE, neg
+        )
         template = template.transpose((2, 0, 1)).astype(np.float32)
         search = search.transpose((2, 0, 1)).astype(np.float32)
         return {
-                'template': template,
-                'search': search,
-                'label_cls': cls,
-                'label_loc': delta,
-                'label_loc_weight': delta_weight,
-                'bbox': np.array(bbox)
-                }
+            "template": template,
+            "search": search,
+            "label_cls": cls,
+            "label_loc": delta,
+            "label_loc_weight": delta_weight,
+            "bbox": np.array(bbox),
+        }

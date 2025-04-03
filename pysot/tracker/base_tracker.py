@@ -1,9 +1,4 @@
-# Copyright (c) SenseTime. All Rights Reserved.
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import cv2
 import numpy as np
@@ -13,8 +8,8 @@ from pysot.core.config import cfg
 
 
 class BaseTracker(object):
-    """ Base tracker of single objec tracking
-    """
+    """Base tracker of single objec tracking"""
+
     def init(self, img, bbox):
         """
         args:
@@ -55,10 +50,10 @@ class SiameseTracker(BaseTracker):
         # context_ymin = round(pos[1] - c)
         context_ymin = np.floor(pos[1] - c + 0.5)
         context_ymax = context_ymin + sz - 1
-        left_pad = int(max(0., -context_xmin))
-        top_pad = int(max(0., -context_ymin))
-        right_pad = int(max(0., context_xmax - im_sz[1] + 1))
-        bottom_pad = int(max(0., context_ymax - im_sz[0] + 1))
+        left_pad = int(max(0.0, -context_xmin))
+        top_pad = int(max(0.0, -context_ymin))
+        right_pad = int(max(0.0, context_xmax - im_sz[1] + 1))
+        bottom_pad = int(max(0.0, context_ymax - im_sz[0] + 1))
 
         context_xmin = context_xmin + left_pad
         context_xmax = context_xmax + left_pad
@@ -69,20 +64,26 @@ class SiameseTracker(BaseTracker):
         if any([top_pad, bottom_pad, left_pad, right_pad]):
             size = (r + top_pad + bottom_pad, c + left_pad + right_pad, k)
             te_im = np.zeros(size, np.uint8)
-            te_im[top_pad:top_pad + r, left_pad:left_pad + c, :] = im
+            te_im[top_pad : top_pad + r, left_pad : left_pad + c, :] = im
             if top_pad:
-                te_im[0:top_pad, left_pad:left_pad + c, :] = avg_chans
+                te_im[0:top_pad, left_pad : left_pad + c, :] = avg_chans
             if bottom_pad:
-                te_im[r + top_pad:, left_pad:left_pad + c, :] = avg_chans
+                te_im[r + top_pad :, left_pad : left_pad + c, :] = avg_chans
             if left_pad:
                 te_im[:, 0:left_pad, :] = avg_chans
             if right_pad:
-                te_im[:, c + left_pad:, :] = avg_chans
-            im_patch = te_im[int(context_ymin):int(context_ymax + 1),
-                             int(context_xmin):int(context_xmax + 1), :]
+                te_im[:, c + left_pad :, :] = avg_chans
+            im_patch = te_im[
+                int(context_ymin) : int(context_ymax + 1),
+                int(context_xmin) : int(context_xmax + 1),
+                :,
+            ]
         else:
-            im_patch = im[int(context_ymin):int(context_ymax + 1),
-                          int(context_xmin):int(context_xmax + 1), :]
+            im_patch = im[
+                int(context_ymin) : int(context_ymax + 1),
+                int(context_xmin) : int(context_xmax + 1),
+                :,
+            ]
 
         if not np.array_equal(model_sz, original_sz):
             im_patch = cv2.resize(im_patch, (model_sz, model_sz))

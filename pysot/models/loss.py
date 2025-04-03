@@ -1,17 +1,11 @@
-# Copyright (c) SenseTime. All Rights Reserved.
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import torch
 import torch.nn.functional as F
 
 
 def get_cls_loss(pred, label, select):
-    if len(select.size()) == 0 or \
-            select.size() == torch.Size([0]):
+    if len(select.size()) == 0 or select.size() == torch.Size([0]):
         return 0
     pred = torch.index_select(pred, 0, select)
     label = torch.index_select(label, 0, select)
