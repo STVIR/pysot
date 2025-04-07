@@ -1,5 +1,9 @@
 asset/notebook.ipynb
-temp
+temp/*
+pysot/services
+pysot/cfg/models/*/*.pth
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,13 +1,16 @@
 colorama==0.4.6
 colorlog==6.9.0
 Cython==3.0.12
+gdown==5.2.0
 matplotlib==3.10.1
 numpy==2.2.4
 opencv_python==4.11.0.86
 pandas==2.2.3
 Pillow==11.1.0
+pytubefix==8.12.3
+PyYAML==6.0.2
 tensorboardX==2.6.2.2
 torch==2.6.0+cu118
 tqdm==4.67.1
-vot_trax==4.0.2
+trax==1.4.1
 yacs==0.1.8

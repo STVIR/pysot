@@ -4,7 +4,7 @@ import math
 
 import numpy as np
 
-from pysot.utils.bbox import center2corner, corner2center
+from pysot.utils.bbox_utils import center2corner, corner2center
 
 
 class Anchors:

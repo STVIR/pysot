@@ -15,4 +15,6 @@ BACKBONES = {
 
 
 def get_backbone(name, **kwargs):
+    if name not in BACKBONES:
+        raise ValueError(f"Backbone {name} is not implemented in pysot.")
     return BACKBONES[name](**kwargs)

@@ -157,13 +157,15 @@ __C.DATASET.DET.FRAME_RANGE = 1
 __C.DATASET.DET.NUM_USE = -1
 
 __C.DATASET.VIDEOS_PER_EPOCH = 600000
+
+__C.DATASET.TEMP = "temp/videos"
 # ------------------------------------------------------------------------ #
 # Backbone options
 # ------------------------------------------------------------------------ #
 __C.BACKBONE = CN()
 
 # Backbone type, current only support resnet18,34,50;alexnet;mobilenet
-__C.BACKBONE.TYPE = "res50"
+__C.BACKBONE.TYPE = "resnet50"
 
 __C.BACKBONE.KWARGS = CN(new_allowed=True)
 

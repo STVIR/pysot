@@ -5,7 +5,7 @@ import numpy as np
 
 from pysot.core.config import cfg
 from pysot.tracker.siamrpn_tracker import SiamRPNTracker
-from pysot.utils.bbox import cxy_wh_2_rect
+from pysot.utils.bbox_utils import cxy_wh_2_rect
 
 
 class SiamMaskTracker(SiamRPNTracker):
@@ -21,7 +21,7 @@ class SiamMaskTracker(SiamRPNTracker):
         b = (out_sz[1] - 1) / bbox[3]
         c = -a * bbox[0]
         d = -b * bbox[1]
-        mapping = np.array([[a, 0, c], [0, b, d]]).astype(np.float)
+        mapping = np.array([[a, 0, c], [0, b, d]]).astype(np.float32)
         crop = cv2.warpAffine(
             image,
             mapping,
@@ -35,14 +35,14 @@ class SiamMaskTracker(SiamRPNTracker):
     def _mask_post_processing(self, mask):
         target_mask = mask > cfg.TRACK.MASK_THERSHOLD
         target_mask = target_mask.astype(np.uint8)
-        if cv2.__version__[-5] == "4":
-            contours, _ = cv2.findContours(
-                target_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
-            )
-        else:
-            _, contours, _ = cv2.findContours(
-                target_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
-            )
+
+        # Unified contour finding for all OpenCV versions
+        contours = cv2.findContours(
+            target_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
+        )
+        # Handle different OpenCV versions (3.x vs 4.x)
+        contours = contours[0] if len(contours) == 2 else contours[1]
+
         cnt_area = [cv2.contourArea(cnt) for cnt in contours]
         if len(contours) != 0 and np.max(cnt_area) > 100:
             contour = contours[np.argmax(cnt_area)]
@@ -60,6 +60,35 @@ class SiamMaskTracker(SiamRPNTracker):
                 ]
             )
         return rbox_in_img
+
+    # def _mask_post_processing(self, mask):
+    #     target_mask = mask > cfg.TRACK.MASK_THERSHOLD
+    #     target_mask = target_mask.astype(np.uint8)
+    #     if cv2.__version__[-5] == "4":
+    #         contours, _ = cv2.findContours(
+    #             target_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
+    #         )
+    #     else:
+    #         _, contours, _ = cv2.findContours(
+    #             target_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
+    #         )
+    #     cnt_area = [cv2.contourArea(cnt) for cnt in contours]
+    #     if len(contours) != 0 and np.max(cnt_area) > 100:
+    #         contour = contours[np.argmax(cnt_area)]
+    #         polygon = contour.reshape(-1, 2)
+    #         prbox = cv2.boxPoints(cv2.minAreaRect(polygon))
+    #         rbox_in_img = prbox
+    #     else:  # empty mask
+    #         location = cxy_wh_2_rect(self.center_pos, self.size)
+    #         rbox_in_img = np.array(
+    #             [
+    #                 [location[0], location[1]],
+    #                 [location[0] + location[2], location[1]],
+    #                 [location[0] + location[2], location[1] + location[3]],
+    #                 [location[0], location[1] + location[3]],
+    #             ]
+    #         )
+    #     return rbox_in_img
 
     def track(self, img):
         """

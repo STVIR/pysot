@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 from pysot.core.config import cfg
 from pysot.tracker.base_tracker import SiameseTracker
-from pysot.utils.anchor import Anchors
+from pysot.utils.anchor_utils import Anchors
 
 
 class SiamRPNTracker(SiameseTracker):

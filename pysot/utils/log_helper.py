@@ -4,8 +4,8 @@ import logging
 import math
 import os
 import sys
-import colorlog
 
+import colorlog
 
 if hasattr(sys, "frozen"):  # support for py2exe
     _srcfile = "logging%s__init__%s" % (os.sep, __file__[-4:])

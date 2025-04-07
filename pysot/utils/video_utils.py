@@ -1,39 +1,45 @@
 import os
-import cv2
 from glob import glob
-from pytubefix import YouTube
-from pytubefix.cli import on_progress
+
+import cv2
 
 
-def download_youtube_video(url: str, dest: str):
-    yt = YouTube(url, on_progress_callback=on_progress)
-    ys = yt.streams.get_highest_resolution()
-    ys.download(output_path=dest)
-
-
-def get_frames(video_name):
-    if not video_name:
-        cap = cv2.VideoCapture(0)
-        # warmup
-        for i in range(5):
-            cap.read()
-        while True:
-            ret, frame = cap.read()
-            if ret:
-                yield frame
+def get_frames(video_name: str = ""):
+    match video_name:
+        case "":
+            print("math 1")
+            cap = cv2.VideoCapture(0)
+            # warmup
+            for _ in range(5):
+                cap.read()
+            while True:
+                ret, frame = cap.read()
+                if ret:
+                    yield frame
+                else:
+                    break
+        case str():
+            print("math 2")
+            print(type(video_name))
+            if video_name.endswith(".avi") or video_name.endswith(".mp4"):
+                print("match 2.1", video_name)
+                cap = cv2.VideoCapture(video_name)
+                while True:
+                    ret, frame = cap.read()
+                    print(frame)
+                    if ret:
+                        print(frame.shape)
+                        yield frame
+                    else:
+                        break
             else:
-                break
-    elif video_name.endswith("avi") or video_name.endswith("mp4"):
-        cap = cv2.VideoCapture(video_name)
-        while True:
-            ret, frame = cap.read()
-            if ret:
-                yield frame
-            else:
-                break
-    else:
-        images = glob(os.path.join(video_name, "*.jp*"))
-        images = sorted(images, key=lambda x: int(x.split("/")[-1].split(".")[0]))
-        for img in images:
-            frame = cv2.imread(img)
-            yield frame
+                print("math 2.2")
+                images = glob(os.path.join(video_name, "*.jp*"))
+                images = sorted(
+                    images, key=lambda x: int(x.split("/")[-1].split(".")[0])
+                )
+                for img in images:
+                    frame = cv2.imread(img)
+                    yield frame
+        case _:
+            raise ValueError(f"Invalid video name: {video_name}")

@@ -4,7 +4,10 @@ import logging
 
 import torch
 
-logger = logging.getLogger("global")
+
+from pysot.utils.log_helper import setup_logger
+
+logger = setup_logger("pysot")
 
 
 def check_keys(model, pretrained_state_dict):
